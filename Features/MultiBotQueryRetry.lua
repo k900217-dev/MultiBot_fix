@@ -58,15 +58,15 @@ local function scheduleCheck(pName, pEntry)
 				pEntry.attempts = 0
 				-- LOG(2026-11-12): 补查轮开始写入通信日志(仅调试记录模式)
 				if(MultiBot.CommLogEnabled and MultiBot.AddCommLog ~= nil) then
-					MultiBot.AddCommLog("info", pName, "查询 " .. pEntry.cmd .. " 第" .. (pEntry.round - 1)
-						.. "轮超时, " .. ROUND_PAUSE .. "秒后自动补查第" .. pEntry.round .. "轮")
+					MultiBot.AddCommLog("info", pName, MultiBot.TF("查询 %s 第%s轮超时, %s秒后自动补查第%s轮",
+						pEntry.cmd, pEntry.round - 1, ROUND_PAUSE, pEntry.round))
 				end
 				After(ROUND_PAUSE, function()
 					local tCur = MultiBot._queryRetry and MultiBot._queryRetry[pName]
 					if(tCur ~= pEntry) then return end -- 已被响应解除或被新查询替换
 					-- LOG(2026-11-12): 补查发送写入通信日志(仅调试记录模式)
 					if(MultiBot.CommLogEnabled and MultiBot.AddCommLog ~= nil) then
-						MultiBot.AddCommLog("send", pName, pEntry.cmd .. " (自动补查 第" .. pEntry.round .. "轮)")
+						MultiBot.AddCommLog("send", pName, MultiBot.TF("%s (自动补查 第%s轮)", pEntry.cmd, pEntry.round))
 					end
 					reassertWaitFor(pName, pEntry.cmd)
 					SendChatMessage(pEntry.cmd, "WHISPER", nil, pName)
@@ -76,7 +76,7 @@ local function scheduleCheck(pName, pEntry)
 				return
 			end
 			MultiBot._queryRetry[pName] = nil
-			print("|cffff6060[MultiBot]|r " .. pName .. " 未响应策略查询(" .. pEntry.cmd .. ")——机器人可能尚未完全上线或响应丢失, 可稍后重试。")
+			print(MultiBot.TF("|cffff6060[MultiBot]|r %s 未响应策略查询(%s)——机器人可能尚未完全上线或响应丢失, 可稍后重试。", pName, pEntry.cmd))
 			-- FIX(2026-11-13): 超限后按"最后一次已知真实策略栈"重画还原该机器人面板。
 			-- 消除切换指令(待确认压暗/互斥预测互灭)的残留状态, 面板回到已知真实状态——
 			-- 未获确认的切换不代表生效(上方提示已说明), 但面板绝不停留在假状态。
@@ -94,11 +94,11 @@ local function scheduleCheck(pName, pEntry)
 				end
 				-- FIX(2026-11-14): 还原重画后同样同步根按钮绿框
 				if(MultiBot.SyncRootButtons) then MultiBot.SyncRootButtons(tFrame) end
-				print("|cffffd100[MultiBot]|r " .. pName .. " 面板已还原到最近已知状态(本次切换未获确认, 不代表已生效)。")
+				print(MultiBot.TF("|cffffd100[MultiBot]|r %s 面板已还原到最近已知状态(本次切换未获确认, 不代表已生效)。", pName))
 			end
 			-- LOG(2026-11-12): 查询超时写入通信日志(仅调试记录模式)
 			if(MultiBot.CommLogEnabled and MultiBot.AddCommLog ~= nil) then
-				MultiBot.AddCommLog("info", pName, "查询 " .. pEntry.cmd .. " 超时(" .. MAX_ATTEMPTS .. "次无响应)——机器人可能未完全上线, 应答丢失")
+				MultiBot.AddCommLog("info", pName, MultiBot.TF("查询 %s 超时(%s次无响应)——机器人可能未完全上线, 应答丢失", pEntry.cmd, MAX_ATTEMPTS))
 			end
 			return
 		end
@@ -106,7 +106,7 @@ local function scheduleCheck(pName, pEntry)
 		pEntry.attempts = pEntry.attempts + 1
 		-- LOG(2026-11-12): 自动重试发送写入通信日志(仅调试记录模式)
 		if(MultiBot.CommLogEnabled and MultiBot.AddCommLog ~= nil) then
-			MultiBot.AddCommLog("send", pName, pEntry.cmd .. " (自动重试 " .. pEntry.attempts .. "/" .. MAX_ATTEMPTS .. ")")
+			MultiBot.AddCommLog("send", pName, MultiBot.TF("%s (自动重试 %s/%s)", pEntry.cmd, pEntry.attempts, MAX_ATTEMPTS))
 		end
 		reassertWaitFor(pName, pEntry.cmd)
 		SendChatMessage(pEntry.cmd, "WHISPER", nil, pName)

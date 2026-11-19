@@ -3,6 +3,12 @@
 
 更新日志
 
+2026.11.19
+
+1、添加了中英双语适配。
+
+2、修复了查看天赋按钮，有时会报距离过远的错误。
+
 2026.11.18
 
 1、修复了原插件按钮行上方区域，若干透明遮盖层造成的操作遮挡问题。
@@ -30,6 +36,10 @@
 Since the original author of this plugin on GitHub has not updated it for more than a year, the plugin is no longer compatible with WLK335 builds compiled after October 2026, resulting in many issues. Therefore, based on the playerbots source code from the 2026.10.16 build, I have re‑worked and fixed the plugin. Details are as follows (I am currently preparing an English‑adapted version):
 
 Update Log
+
+2026.11.19
+1. Added Chinese and English dual‑language support.
+2. Fixed the issue where the view talent button sometimes reports that the distance is too far.
 
 2026.11.18
 1. Fixed the issue where several transparent overlay layers above the original plugin’s button rows caused interaction obstruction.

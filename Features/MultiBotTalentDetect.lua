@@ -98,6 +98,20 @@ function MultiBot.TalentCacheSetManual(pName, pSpecKey)
 	return true
 end
 
+-- 服务端天赋全名 → 天赋变量档位 key
+--   目的: SetTalents 按钮(每行最后的剑图标)选完天赋后同步绿点变量。
+--   规则: 剥掉末尾 " pve"/" pvp" 后缀即可——PVP 预制与同名 PVE 是同一主导树,
+--         所以 PVP 直接沿用对应 PVE 的档位(不会标错绿点)。
+--   例: "arms pve"/"arms pvp" → "arms"; "double aura blood pve" → "double aura blood"。
+--   校验仍由 TalentCacheSetManual 负责(as→assassin / frostfire→fire / 双光环→blood 等)。
+function MultiBot.SpecToTalentKey(pSpec)
+	if(type(pSpec) ~= "string") then return nil end
+	local tKey = pSpec:lower():gsub("^%s+", ""):gsub("%s+$", "")
+	tKey = tKey:gsub("%s+pvp$", ""):gsub("%s+pve$", "")
+	if(tKey == "") then return nil end
+	return tKey
+end
+
 -- 清除某机器人的天赋变量(录入界面"清除"按钮): 绿点随之消失
 function MultiBot.TalentCacheClear(pName)
 	if(pName == nil or pName == "") then return end
@@ -222,7 +236,7 @@ local function dropDownInit(self, pLevel)
 		local tInfo = UIDropDownMenu_CreateInfo()
 		local tLabel = t[2] .. "  |cff888888(" .. t[1] .. ")|r"
 		if(not MANUAL_SPEC_KNOWN[tKey]) then
-			tLabel = tLabel .. " |cffff8888[无出厂默认表]|r"
+			tLabel = tLabel .. MultiBot.T(" |cffff8888[无出厂默认表]|r")
 		end
 		tInfo.text = tLabel
 		tInfo.value = t[1]
@@ -250,16 +264,16 @@ local function uiRefresh()
 	local tName, tClass = tPopup.botName, tPopup.botClass
 	local tCNClass = MultiBot.talentClassNameCN
 		and MultiBot.talentClassNameCN[tClass == "DeathKnight" and "Death Knight" or tClass] or tClass
-	tPopup.header:SetText("天赋变量 - " .. (tName or "?") .. " (" .. (tCNClass or "?") .. ")")
+	tPopup.header:SetText(MultiBot.TF("天赋变量 - %s (%s)", tName or "?", tCNClass or "?"))
 	local tTalent = MultiBot.TalentCache ~= nil and MultiBot.TalentCache[tName] or nil
 	local tCurKey = tTalent ~= nil and tTalent.spec or nil
 	-- 三十一轮: 旧存档的 emo/doubleaurablood 归一成新 key 再反查/显示(不改存档值)
 	if(tCurKey ~= nil and LEGACY_SPEC_ALIAS[tCurKey] ~= nil) then tCurKey = LEGACY_SPEC_ALIAS[tCurKey] end
 	if(tCurKey ~= nil) then
 		local tCN = specCN(tClass, tCurKey)
-		tPopup.current:SetText("|cff00ff44当前变量: " .. (tCN ~= nil and (tCN .. " / ") or "") .. tCurKey .. "|r")
+		tPopup.current:SetText(MultiBot.TF("|cff00ff44当前变量: %s%s|r", (tCN ~= nil and (tCN .. " / ") or ""), tCurKey))
 	else
-		tPopup.current:SetText("|cffff6060未设置(该机器人不打绿点)|r")
+		tPopup.current:SetText(MultiBot.T("|cffff6060未设置(该机器人不打绿点)|r"))
 	end
 	-- 每次打开按当前机器人职业重建下拉选项(换机器人/换职业都正确)
 	tPopup.selKey = nil
@@ -280,9 +294,9 @@ local function uiRefresh()
 		-- 十三轮: 不再调 SetSelectedValue(钩选由 dropDownInit/func 显式管理, 见上)
 		UIDropDownMenu_SetText(tPopup.drop, tFound[2])
 	elseif(tList == nil) then
-		UIDropDownMenu_SetText(tPopup.drop, "未知职业")
+		UIDropDownMenu_SetText(tPopup.drop, MultiBot.T("未知职业"))
 	else
-		UIDropDownMenu_SetText(tPopup.drop, "请选择天赋")
+		UIDropDownMenu_SetText(tPopup.drop, MultiBot.T("请选择天赋"))
 	end
 end
 
@@ -323,29 +337,29 @@ function MultiBot.TalentSpecUIOpen(pName, pClass)
 		tTip:SetWidth(290)
 		tTip:SetJustifyH("CENTER")
 		tTip:SetTextColor(0.6, 0.75, 0.6)
-		tTip:SetText("选项与书按钮天赋列表一致。变量来源: 手动录入 / 书按钮确认切换。|n绿点只标当前变量对应档位的出厂默认策略。")
+		tTip:SetText(MultiBot.T("选项与书按钮天赋列表一致。变量来源: 手动录入 / 书按钮确认切换。|n绿点只标当前变量对应档位的出厂默认策略。"))
 
 		-- 设置(确认) --
 		tPopup.confirm = CreateFrame("Button", nil, tPopup, "UIPanelButtonTemplate")
 		tPopup.confirm:SetSize(80, 24)
 		tPopup.confirm:SetPoint("BOTTOMLEFT", 24, 18)
-		tPopup.confirm:SetText("设置")
+		tPopup.confirm:SetText(MultiBot.T("设置"))
 		tPopup.confirm:SetScript("OnClick", function()
 			local tInput = tPopup.selKey
 			if(tInput == nil or tInput == "") then
-				print("|cffff6060[MultiBot]|r 请先在下拉框中选择天赋。")
+				print(MultiBot.T("|cffff6060[MultiBot]|r 请先在下拉框中选择天赋。"))
 				return
 			end
 			if(MultiBot.TalentCacheSetManual(tPopup.botName, tInput)) then
 				local tSpec = MultiBot.TalentCache[tPopup.botName].spec
 				local tCN = specCN(tPopup.botClass, tSpec)
-				print("|cff00ff44[MultiBot]|r " .. tPopup.botName .. " 天赋变量已设置: "
-					.. (tCN ~= nil and (tCN .. " / ") or "") .. tSpec .. "(绿点已重标, 登出自动保存)。")
+				print(MultiBot.TF("|cff00ff44[MultiBot]|r %s 天赋变量已设置: %s%s(绿点已重标, 登出自动保存)。",
+					tPopup.botName, (tCN ~= nil and (tCN .. " / ") or ""), tSpec))
 				-- FIX(2026-11-16 十二轮): 设置成功即关窗——旧弹窗滞留会拦截下一次
 				-- Ctrl+点击(DIALOG 层级+鼠标拦截), 表现为"点别的机器人还弹上一个的框"
 				tPopup:Hide()
 			else
-				print("|cffffaa00[MultiBot]|r " .. tInput .. " 无服务端出厂默认策略表, 不写入变量(该档位绿点不显示)。")
+				print(MultiBot.TF("|cffffaa00[MultiBot]|r %s 无服务端出厂默认策略表, 不写入变量(该档位绿点不显示)。", tInput))
 			end
 		end)
 
@@ -353,10 +367,10 @@ function MultiBot.TalentSpecUIOpen(pName, pClass)
 		tPopup.clear = CreateFrame("Button", nil, tPopup, "UIPanelButtonTemplate")
 		tPopup.clear:SetSize(80, 24)
 		tPopup.clear:SetPoint("BOTTOMLEFT", 120, 18)
-		tPopup.clear:SetText("清除")
+		tPopup.clear:SetText(MultiBot.T("清除"))
 		tPopup.clear:SetScript("OnClick", function()
 			MultiBot.TalentCacheClear(tPopup.botName)
-			print("|cffffaa00[MultiBot]|r " .. tPopup.botName .. " 天赋变量已清除(绿点不显示, 直至重新录入/书按钮切换)。")
+			print(MultiBot.TF("|cffffaa00[MultiBot]|r %s 天赋变量已清除(绿点不显示, 直至重新录入/书按钮切换)。", tPopup.botName))
 			tPopup:Hide() -- 同上: 清除后也关窗, 避免滞留拦截后续点击
 		end)
 
@@ -364,7 +378,7 @@ function MultiBot.TalentSpecUIOpen(pName, pClass)
 		local tClose = CreateFrame("Button", nil, tPopup, "UIPanelButtonTemplate")
 		tClose:SetSize(80, 24)
 		tClose:SetPoint("BOTTOMRIGHT", -24, 18)
-		tClose:SetText("关闭")
+		tClose:SetText(MultiBot.T("关闭"))
 		tClose:SetScript("OnClick", function() tPopup:Hide() end)
 
 		local tX = CreateFrame("Button", nil, tPopup, "UIPanelCloseButton")

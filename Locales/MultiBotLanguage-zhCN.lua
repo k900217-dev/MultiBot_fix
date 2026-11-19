@@ -2650,7 +2650,7 @@ MultiBot.tips.units.pvpstatstoraid =
 		.. "|cffbbbbbb· 不重配装备：换系后装备属性可能不匹配（如治疗装打输出、缺命中/法伤），需要另用书按钮，或 Alt/Ctrl+点书按钮只换装。|r\n"
 		.. "|cffbbbbbb· 不发 reset botAI、不删除策略存档；但服务端在切换天赋时内部会重建默认策略——手动加的（如坦克辅助）当场被关掉。|r\n"
 		.. "|cffbbbbbb· 若随后在队伍中登出，当前默认列表会覆盖旧策略存档，之前的手动设置就丢了。|r\n"
-		.. "|cffbbbbbb· 天赋变量/绿点不会自动更新：跨系切换后需 Ctrl+左键重新录入，否则绿点会标错。|r\n"
+		.. "|cffbbbbbb· 天赋变量/绿点会自动跟随：服务端确认切换后写入（PVP 沿用同名 PVE 档）；敏锐贼无默认表，不写入。|r\n"
 		.. "|cffbbbbbb· 切换后策略条不会自动刷新，请鼠标右键点击单位控制按钮刷新。|r"
 
 	MultiBot.tips.spec.dkbloodpve = "鲜血 – PvE|cffffffff\n"

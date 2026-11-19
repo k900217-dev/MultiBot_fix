@@ -332,6 +332,23 @@ whisperFrame:SetScript("OnEvent", function(_, _, msg, sender)
         return
     end]]--
     ----------------------------------------------------------------
+    -- 2-bis) « Picking <spec> » : 服务端确认已切换 → 同步天赋变量(绿点)
+    --        2026-11-19: 只在收到回执时写入(用户要求); 无回执/被服务端拒绝则不写,
+    --        保证变量不会领先于真实天赋。装备不受影响(本按钮从不发 autogear)。
+    ----------------------------------------------------------------
+    if clean:match("^%s*Picking%s+") then
+        local pp = Spec.pendingPick
+        if pp ~= nil and pp.bot ~= nil and pp.key ~= nil
+            and short(sender) == short(pp.bot) then
+            Spec.pendingPick = nil
+            if MultiBot.TalentCacheSetManual ~= nil then
+                MultiBot.TalentCacheSetManual(pp.bot, pp.key)
+            end
+        end
+        return
+    end
+
+    ----------------------------------------------------------------
     -- 2) « My current talent spec is: … (x/x/x) »
     ----------------------------------------------------------------
     if clean:match("^%s*My current talent spec is:") then
@@ -532,6 +549,12 @@ local current = Spec.currentBuild[botKey]
 
                     -- c) 0,4 s plus tard → talents spec <nom>
                     TimerAfter(0.4, function()
+                        -- 2026-11-19: 记录本次选择的档位, 等收到服务端回执「Picking <spec>」后
+                        -- 再写天赋变量(绿点)——没回执就不写, 避免把未生效的天赋标成默认。
+                        Spec.pendingPick = {
+                            bot = bot,
+                            key = (MultiBot.SpecToTalentKey and MultiBot.SpecToTalentKey(spec)) or nil,
+                        }
                         SendChatMessage("talents spec " .. spec, "WHISPER", nil, bot)
                     end)
 

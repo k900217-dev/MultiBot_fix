@@ -44,30 +44,30 @@ MultiBot._talentSwitcherLoaded = true
 
 -- 职业-天赋数据表
 MultiBot.talentData = {
-    ["Druid"]    = { {"balance",  "鸟德"},  {"bear",   "熊德"},  {"resto",   "奶德"},  {"cat",     "猫德"} },
-    ["Warlock"]  = { {"affli",    "痛苦术"}, {"demo",   "恶魔术"}, {"destro",  "毁灭术"} },
-    ["Mage"]     = { {"arcane",   "奥法"},  {"frostfire","霜火法"},{"fire",    "火法"}, {"frost",   "冰法"} },
-    ["Shaman"]   = { {"ele",      "电萨"},  {"enh",    "增强萨"}, {"resto",   "奶萨"} },
-    ["Death Knight"] = { {"blood","血DK"},  {"frost",  "冰DK"},  {"unholy",  "邪DK"}, {"double aura blood","双光环DK"} },
-    ["Priest"]   = { {"disc",     "戒律牧"}, {"holy",  "神牧"},  {"shadow",  "暗牧"} },
-    ["Rogue"]    = { {"as",       "刺杀贼"}, {"combat","战斗贼"}, {"subtlety","敏锐贼"} },
-    ["Hunter"]   = { {"bm",       "兽王"},  {"mm",    "射击"},  {"surv",    "生存猎"} },
-    ["Paladin"]  = { {"holy",     "奶骑"},  {"prot",  "防骑"},  {"ret",     "惩戒骑"} },
-    ["Warrior"]  = { {"arms",     "武器战"}, {"fury", "狂暴战"}, {"prot",    "防战"} },
+["Druid"]    = { {"balance",  MultiBot.T("鸟德")},  {"bear",   MultiBot.T("熊德")},  {"resto",   MultiBot.T("奶德")},  {"cat",     MultiBot.T("猫德")} },
+["Warlock"]  = { {"affli",    MultiBot.T("痛苦术")}, {"demo",   MultiBot.T("恶魔术")}, {"destro",  MultiBot.T("毁灭术")} },
+["Mage"]     = { {"arcane",   MultiBot.T("奥法")},  {"frostfire",MultiBot.T("霜火法")},{"fire",    MultiBot.T("火法")}, {"frost",   MultiBot.T("冰法")} },
+["Shaman"]   = { {"ele",      MultiBot.T("电萨")},  {"enh",    MultiBot.T("增强萨")}, {"resto",   MultiBot.T("奶萨")} },
+["Death Knight"] = { {"blood",MultiBot.T("血DK")},  {"frost",  MultiBot.T("冰DK")},  {"unholy",  MultiBot.T("邪DK")}, {"double aura blood",MultiBot.T("双光环DK")} },
+["Priest"]   = { {"disc",     MultiBot.T("戒律牧")}, {"holy",  MultiBot.T("神牧")},  {"shadow",  MultiBot.T("暗牧")} },
+["Rogue"]    = { {"as",       MultiBot.T("刺杀贼")}, {"combat",MultiBot.T("战斗贼")}, {"subtlety",MultiBot.T("敏锐贼")} },
+["Hunter"]   = { {"bm",       MultiBot.T("兽王")},  {"mm",    MultiBot.T("射击")},  {"surv",    MultiBot.T("生存猎")} },
+["Paladin"]  = { {"holy",     MultiBot.T("奶骑")},  {"prot",  MultiBot.T("防骑")},  {"ret",     MultiBot.T("惩戒骑")} },
+["Warrior"]  = { {"arms",     MultiBot.T("武器战")}, {"fury", MultiBot.T("狂暴战")}, {"prot",    MultiBot.T("防战")} },
 }
 
 -- 中文职业名映射（用于显示）
 MultiBot.talentClassNameCN = {
-    ["Druid"]        = "德鲁伊",
-    ["Warlock"]      = "术士",
-    ["Mage"]         = "法师",
-    ["Shaman"]       = "萨满",
-    ["Death Knight"] = "DK",
-    ["Priest"]       = "牧师",
-    ["Rogue"]        = "潜行者",
-    ["Hunter"]       = "猎人",
-    ["Paladin"]      = "圣骑士",
-    ["Warrior"]      = "战士",
+    ["Druid"]        = MultiBot.T("德鲁伊"),
+    ["Warlock"]      = MultiBot.T("术士"),
+    ["Mage"]         = MultiBot.T("法师"),
+    ["Shaman"]       = MultiBot.T("萨满"),
+    ["Death Knight"] = MultiBot.T("DK"),
+    ["Priest"]       = MultiBot.T("牧师"),
+    ["Rogue"]        = MultiBot.T("潜行者"),
+    ["Hunter"]       = MultiBot.T("猎人"),
+    ["Paladin"]      = MultiBot.T("圣骑士"),
+    ["Warrior"]      = MultiBot.T("战士"),
 }
 
 -- 每个机器人的当前天赋索引 [targetName] = index
@@ -300,19 +300,19 @@ end
 
 -- 确认弹窗定义 (text 的两个 %s 由 StaticPopup_Show 的 arg1/arg2 填充)
 StaticPopupDialogs["MULTIBOT_TALENT_CONFIRM"] = {
-    text = "确认对 |cffffd700%s|r 执行天赋切换？\n\n"
+    text = MultiBot.T("确认对 |cffffd700%s|r 执行天赋切换？\n\n"
         .. "|cffff6060警告: 已穿装备将被删除并重新配置, 天赋将被重置!|r\n"
         .. "|cffff2020特别提示: 请勿对真实账号(自建账号)的角色使用!|r\n\n"
-        .. "目标天赋: |cffffff00%s|r",
-    button1 = "确认切换",
-    button2 = "取消",
+        .. "目标天赋: |cffffff00%s|r"),
+    button1 = MultiBot.T("确认切换"),
+    button2 = MultiBot.T("取消"),
     OnAccept = function(self, data)
         if data and MultiBot.CycleTalentConfirmed then
             MultiBot.CycleTalentConfirmed(data)
         end
     end,
     OnCancel = function(self, data)
-        PrintInfo("|cff888888[天赋切换] 已取消, 未做任何改动。|r")
+        PrintInfo(MultiBot.T("|cff888888[天赋切换] 已取消, 未做任何改动。|r"))
     end,
     timeout = 30,
     whileDead = 1,
@@ -330,20 +330,20 @@ StaticPopupDialogs["MULTIBOT_TALENT_CONFIRM"] = {
 
 -- 只换装确认弹窗 (arg1=机器人名, arg2=品质中文名)
 StaticPopupDialogs["MULTIBOT_REGEAR_CONFIRM"] = {
-    text = "确认对 |cffffd700%s|r 只重配装备？\n\n"
+    text = MultiBot.T("确认对 |cffffd700%s|r 只重配装备？\n\n"
         .. "|cffff6060警告: 已穿装备将被删除并重新配置!|r\n"
         .. "|cffff2020特别提示: 请勿对真实账号(自建账号)的角色使用!|r\n\n"
         .. "品质档位: |cffffff00%s|r\n"
-        .. "|cff888888本次不切换天赋、不重置策略。|r",
-    button1 = "确认重配",
-    button2 = "取消",
+        .. "|cff888888本次不切换天赋、不重置策略。|r"),
+    button1 = MultiBot.T("确认重配"),
+    button2 = MultiBot.T("取消"),
     OnAccept = function(self, data)
         if data and MultiBot.RegearOnlyConfirmed then
             MultiBot.RegearOnlyConfirmed(data)
         end
     end,
     OnCancel = function(self, data)
-        PrintInfo("|cff888888[装备重配] 已取消, 未做任何改动。|r")
+        PrintInfo(MultiBot.T("|cff888888[装备重配] 已取消, 未做任何改动。|r"))
     end,
     timeout = 30,
     whileDead = 1,
@@ -361,11 +361,11 @@ function MultiBot.RegearOnlyConfirmed(data)
     -- 品质记忆同步 (与切换路径一致: Alt 记紫装粘性; Ctrl 清粘性后记蓝装)
     if forced == "purple" then
         RememberQuality(targetName, 4)
-        PrintInfo("|cffffaa00[装备重配] Alt 检测到: 强制按 |cffffd700紫装|cffffaa00 重配装备|r")
+        PrintInfo(MultiBot.T("|cffffaa00[装备重配] Alt 检测到: 强制按 |cffffd700紫装|cffffaa00 重配装备|r"))
     else
         ClearQualityMemory(targetName)
         RememberQuality(targetName, 3)
-        PrintInfo("|cffffaa00[装备重配] Ctrl 检测到: 强制按 |cff0070dd蓝装|cffffaa00 重配装备 (已清除粘性紫装记忆)|r")
+        PrintInfo(MultiBot.T("|cffffaa00[装备重配] Ctrl 检测到: 强制按 |cff0070dd蓝装|cffffaa00 重配装备 (已清除粘性紫装记忆)|r"))
     end
 
     -- 作废在途的切换序列 (若正在 3 秒等待窗口内, 以本次操作为准, 防交错)
@@ -373,41 +373,42 @@ function MultiBot.RegearOnlyConfirmed(data)
 
     SendChatMessage("autogear reset " .. forced, "WHISPER", nil, targetName)
 
-    local qualityCN = forced == "purple" and "|cffffd700紫装|r" or "|cff0070dd蓝装|r"
-    PrintInfo(
-        "|cff00ff00[装备重配] |r|cff00ccff" .. targetName .. "|r"
+    local qualityCN = forced == "purple" and MultiBot.T("|cffffd700紫装|r") or MultiBot.T("|cff0070dd蓝装|r")
+    PrintInfo(MultiBot.TF(
+        "|cff00ff00[装备重配] |r|cff00ccff%s|r"
         .. " |cff888888只重配装备, 不切天赋、不重置策略|r"
-        .. "\n|cff00ff44  装备: |cffffd700autogear reset " .. forced .. "|r |cff888888(已发送, 品质: " .. qualityCN .. ")|r"
-        .. "\n|cffff2020  特别提示: 装备删除后不可恢复!|r"
-    )
+        .. "\n|cff00ff44  装备: |cffffd700autogear reset %s|r |cff888888(已发送, 品质: %s)|r"
+        .. "\n|cffff2020  特别提示: 装备删除后不可恢复!|r",
+        targetName, forced, qualityCN
+    ))
     if PlaySound then PlaySound("igMainMenuOptionCheckBoxOn") end
 end
 
 -- 入口: 校验目标 -> 弹确认框 -> 确认后只换装
 function MultiBot.RegearOnly(targetName, forced)
     if (targetName == nil or targetName == "") then
-        PrintInfo("|cffff0000[装备重配]|r 没有选择目标，请先选中一个队伍中的机器人。")
+        PrintInfo(MultiBot.T("|cffff0000[装备重配]|r 没有选择目标，请先选中一个队伍中的机器人。"))
         return
     end
     if (not UnitIsPlayer("target")) then
-        PrintInfo("|cffff0000[装备重配]|r 目标不是玩家，请选中一个玩家机器人。")
+        PrintInfo(MultiBot.T("|cffff0000[装备重配]|r 目标不是玩家，请选中一个玩家机器人。"))
         return
     end
     local isParty = UnitInParty("target")
     local isRaid  = UnitInRaid("target")
     if (isParty == nil and isRaid == nil) then
-        PrintInfo("|cffff0000[装备重配]|r " .. targetName .. " 不在你的队伍中。")
+        PrintInfo(MultiBot.TF("|cffff0000[装备重配]|r %s 不在你的队伍中。", targetName))
         return
     end
     if (forced ~= "purple" and forced ~= "blue") then
-        PrintInfo("|cffff0000[装备重配]|r 未指定品质 (Alt=紫装, Ctrl=蓝装)。")
+        PrintInfo(MultiBot.T("|cffff0000[装备重配]|r 未指定品质 (Alt=紫装, Ctrl=蓝装)。"))
         return
     end
 
     local data = { name = targetName, forced = forced }
     if StaticPopup_Show then
         StaticPopup_Show("MULTIBOT_REGEAR_CONFIRM", targetName,
-            forced == "purple" and "紫装" or "蓝装", data)
+            forced == "purple" and MultiBot.T("紫装") or MultiBot.T("蓝装"), data)
     else
         MultiBot.RegearOnlyConfirmed(data)
     end
@@ -427,11 +428,11 @@ function MultiBot.CycleTalentConfirmed(data)
     -- 手动强制时同步档案 (放在确认后: 取消弹窗不应改动品质记忆)
     if forced == "purple" then
         RememberQuality(targetName, 4)
-        PrintInfo("|cffffaa00[天赋切换] Alt 检测到: 强制按 |cffffd700紫装|cffffaa00 重配装备|r")
+        PrintInfo(MultiBot.T("|cffffaa00[天赋切换] Alt 检测到: 强制按 |cffffd700紫装|cffffaa00 重配装备|r"))
     elseif forced == "blue" then
         ClearQualityMemory(targetName)
         RememberQuality(targetName, 3)
-        PrintInfo("|cffffaa00[天赋切换] Ctrl 检测到: 强制按 |cff0070dd蓝装|cffffaa00 重配装备 (已清除粘性紫装记忆)|r")
+        PrintInfo(MultiBot.T("|cffffaa00[天赋切换] Ctrl 检测到: 强制按 |cff0070dd蓝装|cffffaa00 重配装备 (已清除粘性紫装记忆)|r"))
     end
 
     -- FIX(2026-09-20): 天赋切换与装备刷新不能同时发送。
@@ -476,9 +477,9 @@ function MultiBot.CycleTalentConfirmed(data)
         -- 注意: 这里必须晚于上面 talentCycleIndex 处的 TalentCache 清理, 否则会被清掉。
         if(MultiBot.TalentCacheSetManual ~= nil) then
             if(MultiBot.TalentCacheSetManual(targetName, englishName)) then
-                PrintInfo("|cff00ff44[天赋切换] 绿点档位已同步: |cffffff00" .. targetName .. " → " .. englishName .. "|r")
+                PrintInfo(MultiBot.TF("|cff00ff44[天赋切换] 绿点档位已同步: |cffffff00%s → %s|r", targetName, englishName))
             else
-                PrintInfo("|cffffaa00[天赋切换] 提示: " .. englishName .. " 无服务端默认策略表, 该机器人绿点暂不显示。|r")
+                PrintInfo(MultiBot.TF("|cffffaa00[天赋切换] 提示: %s 无服务端默认策略表, 该机器人绿点暂不显示。|r", englishName))
             end
         end
 
@@ -505,21 +506,24 @@ function MultiBot.CycleTalentConfirmed(data)
         local nextNextIndex = nextIndex + 1
         if (nextNextIndex > #talents) then nextNextIndex = 1 end
         local totalStr = tostring(#talents)
-        local qualityCN = gearParam == "purple" and "|cffffd700紫装|cff888888" or "|cff0070dd蓝装|cff888888"
-        PrintInfo(
-            "|cff00ff00[天赋切换] |r|cff00ccff" .. targetName .. "|r(" .. cnClassName .. ")"
-            .. " -> |cffffff00" .. chineseName .. "|r"
-            .. " |cff888888[" .. tostring(nextIndex) .. "/" .. totalStr .. "]|r"
-            .. "\n|cff00ff44  密语: |cffffd700" .. command .. "|r"
-            .. "\n|cff00ff44  装备: |cffffd700autogear reset " .. gearParam .. "|r |cff888888(3秒后, 按新天赋重配; 品质:" .. qualityCN .. " " .. source .. ")|r"
+        local qualityCN = gearParam == "purple" and MultiBot.T("|cffffd700紫装|cff888888") or MultiBot.T("|cff0070dd蓝装|cff888888")
+        PrintInfo(MultiBot.TF(
+            "|cff00ff00[天赋切换] |r|cff00ccff%s|r(%s)"
+            .. " -> |cffffff00%s|r"
+            .. " |cff888888[%s/%s]|r"
+            .. "\n|cff00ff44  密语: |cffffd700%s|r"
+            .. "\n|cff00ff44  装备: |cffffd700autogear reset %s|r |cff888888(3秒后, 按新天赋重配; 品质:%s %s)|r"
             .. "\n|cff00ff44  AI重置: |cffffd700reset botAI|r |cff888888(4秒后, 重建策略并清除旧策略存档)|r"
-            .. "\n|cffaaaaaa  下次点击: |cffffd700" .. talents[nextNextIndex][2]
-            .. "|r (共" .. totalStr .. "种天赋循环)|r"
+            .. "\n|cffaaaaaa  下次点击: |cffffd700%s"
+            .. "|r (共%s种天赋循环)|r"
             .. "\n|cffaaaaaa  Alt/Ctrl+点击: 只重配装备不切天赋 (Alt=紫装, Ctrl=蓝装)|r"
             .. "\n|cffff2020  特别提示: 请勿对真实账号(自建账号)的角色使用, 装备删除后不可恢复!|r"
             .. "\n|cffffaa00  策略说明: |cffddddddtalents spec 与 reset botAI 都会按新天赋自动重建默认策略, 并清除旧策略存档;"
-            .. "该机器人之前手动保存的策略(co/nc)会被清掉, 如需保留请先备份。|r"
-        )
+            .. "该机器人之前手动保存的策略(co/nc)会被清掉, 如需保留请先备份。|r",
+            targetName, cnClassName, chineseName, tostring(nextIndex), totalStr,
+            command, gearParam, qualityCN, source,
+            talents[nextNextIndex][2], totalStr
+        ))
 
         if PlaySound then PlaySound("igMainMenuOptionCheckBoxOn") end
     end
@@ -530,24 +534,24 @@ function MultiBot.CycleTalentConfirmed(data)
         local gearParam = ResolveGearParam(targetName, detectedQ, forced)
         local source
         if forced == "purple" or forced == "blue" then
-            source = "(手动强制)"
+            source = MultiBot.T("(手动强制)")
         elseif detectedQ == 4 or detectedQ == 3 then
             local d = diag or {}
             if detectedQ == 3 and gearParam == "purple" then
                 -- FIX(2026-11-13): 检测与粘性紫装记忆冲突, 保守按紫装
-                source = "(检测到蓝装但与紫装记忆冲突, 保守按紫装; 显式降级请 Ctrl+点击)"
+                source = MultiBot.T("(检测到蓝装但与紫装记忆冲突, 保守按紫装; 显式降级请 Ctrl+点击)")
             else
-                source = "(实时观察: 物品" .. tostring(d.links or "?") .. "件/史诗" .. tostring(d.epic or "?") .. "件)"
+                source = MultiBot.TF("(实时观察: 物品%s件/史诗%s件)", tostring(d.links or "?"), tostring(d.epic or "?"))
             end
         else
             local d = diag or {}
-            local why = d.reason == "cannot_inspect" and "目标不可检视"
-                or d.reason == "target_lost" and "观察期间目标切换"
-                or d.reason == "no_data" and "未收到观察数据(距离太远?)"
-                or d.reason == "incomplete" and ("观察数据不完整(槽位" .. tostring(d.links or "?") .. "件, 不足14)")
-                or d.reason == "single_shot" and "物品信息未全部缓存"
-                or tostring(d.reason or "未知")
-            source = "(检测失败: " .. why .. "; 用了记忆/默认蓝装, 可Alt+点击强制紫装)"
+            local why = d.reason == "cannot_inspect" and MultiBot.T("目标不可检视")
+                or d.reason == "target_lost" and MultiBot.T("观察期间目标切换")
+                or d.reason == "no_data" and MultiBot.T("未收到观察数据(距离太远?)")
+                or d.reason == "incomplete" and MultiBot.TF("观察数据不完整(槽位%s件, 不足14)", tostring(d.links or "?"))
+                or d.reason == "single_shot" and MultiBot.T("物品信息未全部缓存")
+                or tostring(d.reason or MultiBot.T("未知"))
+            source = MultiBot.TF("(检测失败: %s; 用了记忆/默认蓝装, 可Alt+点击强制紫装)", why)
         end
         RunSequence(gearParam, source)
     end)
@@ -556,17 +560,17 @@ end
 -- 入口: 校验目标 -> 弹确认框 -> 确认后执行
 function MultiBot.CycleTalent(targetName, forced)
     if (targetName == nil or targetName == "") then
-        PrintInfo("|cffff0000[天赋切换]|r 没有选择目标，请先选中一个队伍中的机器人。")
+        PrintInfo(MultiBot.T("|cffff0000[天赋切换]|r 没有选择目标，请先选中一个队伍中的机器人。"))
         return
     end
     if (not UnitIsPlayer("target")) then
-        PrintInfo("|cffff0000[天赋切换]|r 目标不是玩家，请选中一个玩家机器人。")
+        PrintInfo(MultiBot.T("|cffff0000[天赋切换]|r 目标不是玩家，请选中一个玩家机器人。"))
         return
     end
     local isParty = UnitInParty("target")
     local isRaid  = UnitInRaid("target")
     if (isParty == nil and isRaid == nil) then
-        PrintInfo("|cffff0000[天赋切换]|r " .. targetName .. " 不在你的队伍中。")
+        PrintInfo(MultiBot.TF("|cffff0000[天赋切换]|r %s 不在你的队伍中。", targetName))
         return
     end
 
@@ -575,8 +579,8 @@ function MultiBot.CycleTalent(targetName, forced)
 
     local talents = MultiBot.talentData[englishClass]
     if (talents == nil or #talents == 0) then
-        local cnName = MultiBot.talentClassNameCN[englishClass] or englishClass or "未知"
-        PrintInfo("|cffff0000[天赋切换]|r 未找到职业 " .. cnName .. " 的天赋配置。")
+        local cnName = MultiBot.talentClassNameCN[englishClass] or englishClass or MultiBot.T("未知")
+        PrintInfo(MultiBot.TF("|cffff0000[天赋切换]|r 未找到职业 %s 的天赋配置。", cnName))
         return
     end
 
@@ -611,14 +615,14 @@ function MultiBot.ShowTalentList()
     local englishClass = NormalizeClassName(rawClass)
 
     if (targetName == nil or targetName == "") then
-        PrintInfo("|cff888888[天赋列表] 没有选择目标。用法: 选中机器人后输入 /mbt 查看可用天赋，或点击动作条按钮循环切换。")
+        PrintInfo(MultiBot.T("|cff888888[天赋列表] 没有选择目标。用法: 选中机器人后输入 /mbt 查看可用天赋，或点击动作条按钮循环切换。"))
         return
     end
 
     local talents = MultiBot.talentData[englishClass]
     if (talents == nil or #talents == 0) then
-        local cnName = MultiBot.talentClassNameCN[englishClass] or englishClass or "未知"
-        PrintInfo("|cff888888[天赋列表] 职业 " .. cnName .. " 无天赋配置。")
+        local cnName = MultiBot.talentClassNameCN[englishClass] or englishClass or MultiBot.T("未知")
+        PrintInfo(MultiBot.TF("|cff888888[天赋列表] 职业 %s 无天赋配置。", cnName))
         return
     end
 
@@ -626,23 +630,23 @@ function MultiBot.ShowTalentList()
     local curIdx = MultiBot.talentCycleIndex[targetName] or 0
     local remembered = GetRememberedQuality(targetName)
 
-    PrintInfo("|cff00ff00--- " .. targetName .. " (" .. cnClassName .. ") 可用天赋 ---|r")
+    PrintInfo(MultiBot.TF("|cff00ff00--- %s (%s) 可用天赋 ---|r", targetName, cnClassName))
     for i, t in ipairs(talents) do
         local mark = ""
         if (i == curIdx) then
-            mark = " |cffffff00[当前]|r"
+            mark = MultiBot.T(" |cffffff00[当前]|r")
         elseif (i == curIdx + 1 or (curIdx >= #talents and i == 1)) then
-            mark = " |cff00ff00[下一次]|r"
+            mark = MultiBot.T(" |cff00ff00[下一次]|r")
         end
-        PrintInfo("  |cffcccccc" .. tostring(i) .. ".|r |cffffff00" .. t[2] .. "|r (|cff888888talents spec " .. t[1] .. " pve|r)" .. mark)
+        PrintInfo(MultiBot.TF("  |cffcccccc%s.|r |cffffff00%s|r (|cff888888talents spec %s pve|r)%s", tostring(i), t[2], t[1], mark))
     end
     if remembered == "purple" then
-        PrintInfo("|cffaaaaaa装备品质档案: |cffffd700紫装|r (换天赋时自动按紫装重配; Ctrl+点击只按蓝装重配不切天赋)|r")
+        PrintInfo(MultiBot.T("|cffaaaaaa装备品质档案: |cffffd700紫装|r (换天赋时自动按紫装重配; Ctrl+点击只按蓝装重配不切天赋)|r"))
     elseif remembered == "blue" then
-        PrintInfo("|cffaaaaaa装备品质档案: |cff0070dd蓝装|r (换天赋时自动按蓝装重配)|r")
+        PrintInfo(MultiBot.T("|cffaaaaaa装备品质档案: |cff0070dd蓝装|r (换天赋时自动按蓝装重配)|r"))
     end
-    PrintInfo("|cff888888共 " .. tostring(#talents) .. " 种天赋，点击按钮循环切换(需确认); Alt/Ctrl+点击=只重配装备不切天赋(Alt=紫, Ctrl=蓝)|r")
-    PrintInfo("|cffff2020[天赋切换] 特别提示: 请勿对真实账号(自建账号)的角色使用——装备删除后不可恢复!|r")
+    PrintInfo(MultiBot.TF("|cff888888共 %s 种天赋，点击按钮循环切换(需确认); Alt/Ctrl+点击=只重配装备不切天赋(Alt=紫, Ctrl=蓝)|r", tostring(#talents)))
+    PrintInfo(MultiBot.T("|cffff2020[天赋切换] 特别提示: 请勿对真实账号(自建账号)的角色使用——装备删除后不可恢复!|r"))
 end
 
 -- ============================================================
@@ -652,15 +656,15 @@ end
 local function DiagnoseInspect()
     local name = UnitName("target")
     if name == nil or name == "" then
-        PrintInfo("|cffff0000[品质诊断]|r 没有目标。")
+        PrintInfo(MultiBot.T("|cffff0000[品质诊断]|r 没有目标。"))
         return
     end
     if not UnitIsPlayer("target") then
-        PrintInfo("|cffff0000[品质诊断]|r 目标不是玩家。")
+        PrintInfo(MultiBot.T("|cffff0000[品质诊断]|r 目标不是玩家。"))
         return
     end
     if CanInspect and not CanInspect("target") then
-        PrintInfo("|cffff0000[品质诊断]|r CanInspect=false, 目标不可检视(需在队伍且近距离)。")
+        PrintInfo(MultiBot.T("|cffff0000[品质诊断]|r CanInspect=false, 目标不可检视(需在队伍且近距离)。"))
         return
     end
     NotifyInspect("target")
@@ -668,16 +672,16 @@ local function DiagnoseInspect()
     local function show()
         attempts = attempts + 1
         local total, epic, unknown = ScanInspectData()
-        PrintInfo(string.format(
+        PrintInfo(MultiBot.TF(
             "|cff00ff00[品质诊断] 第%d次轮询 %s: |r观察物品=%d 史诗=%d 缓存未命中=%d%s",
             attempts, name, total, epic, unknown,
-            (total > 0 and unknown == 0) and (" => 判定: " .. (epic > 0 and "|cffffd700紫装|r" or "|cff0070dd蓝装|r")) or " => 数据不完整, 继续等待"))
+            (total > 0 and unknown == 0) and (MultiBot.T(" => 判定: ") .. (epic > 0 and MultiBot.T("|cffffd700紫装|r") or MultiBot.T("|cff0070dd蓝装|r"))) or MultiBot.T(" => 数据不完整, 继续等待")))
         if (total == 0 or unknown > 0) and attempts < 5 then
             TimerAfter(0.4, show)
         else
             if ClearInspect then ClearInspect() end
             if total == 0 then
-                PrintInfo("|cffff0000[品质诊断]|r 5次轮询均未收到观察数据: 服务器未响应观察或距离过远。")
+                PrintInfo(MultiBot.T("|cffff0000[品质诊断]|r 5次轮询均未收到观察数据: 服务器未响应观察或距离过远。"))
             end
         end
     end
@@ -739,7 +743,7 @@ local function RegisterTalentButton()
         return true
     end
 
-    local tipText = "循环切换目标机器人天赋\n"
+    local tipText = MultiBot.T("循环切换目标机器人天赋\n"
         .. "  1) talents spec <天赋> pve (立即)\n"
         .. "  2) autogear reset blue/purple (3秒后, 按新天赋重配装备;\n"
         .. "     品质自动保持: 蓝->蓝, 紫->紫)\n"
@@ -748,7 +752,7 @@ local function RegisterTalentButton()
         .. "  装备删除后不可恢复, 点击后会弹确认框|r\n"
         .. "|cff00ccffAlt+点击: 只按紫装重配装备(不切天赋)\n"
         .. "Ctrl+点击: 只按蓝装重配装备(不切天赋)|r\n"
-        .. "聊天命令 /mbt 查看天赋列表, /mbt cycle 循环切换"
+        .. "聊天命令 /mbt 查看天赋列表, /mbt cycle 循环切换")
 
     local btn = parent.addButton(
         BUTTON_NAME, BUTTON_POS_X, BUTTON_POS_Y,
@@ -796,7 +800,7 @@ if not ok then
 end
 
 if ok then
-    PrintInfo("|cff00ff00MultiBot 天赋切换模块已加载 (按钮已注册, 品质保持: 蓝/紫自动检测, 点击需确认)。命令: /mbt|r")
+    PrintInfo(MultiBot.T("|cff00ff00MultiBot 天赋切换模块已加载 (按钮已注册, 品质保持: 蓝/紫自动检测, 点击需确认)。命令: /mbt|r"))
 else
-    PrintInfo("|cff00ff00MultiBot 天赋切换模块已加载 (按钮待注册, 品质保持: 蓝/紫自动检测, 点击需确认)。命令: /mbt|r")
+    PrintInfo(MultiBot.T("|cff00ff00MultiBot 天赋切换模块已加载 (按钮待注册, 品质保持: 蓝/紫自动检测, 点击需确认)。命令: /mbt|r"))
 end

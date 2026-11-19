@@ -3854,7 +3854,7 @@ MultiBot.tips.every.settalent =
 "|cffbbbbbb- No re-gearing: after switching trees the gear may no longer fit (e.g. healing gear on a DPS spec), use the book button, or Alt/Ctrl + book button for re-gear only.|r\n"..
 "|cffbbbbbb- It does not send reset botAI and does not delete the stored strategies; however the server rebuilds the default strategies internally on talent switch, so manual ones (e.g. tank assist) are turned off immediately.|r\n"..
 "|cffbbbbbb- If the bot logs out while grouped afterwards, this default list overwrites the old strategy save and your manual settings are lost.|r\n"..
-"|cffbbbbbb- Talent variable / green dots are not updated automatically: re-enter with Ctrl+Left-Click after a cross-tree switch, otherwise the dots will be wrong.|r\n"..
+"|cffbbbbbb- Talent variable / green dots follow automatically: written once the server confirms the switch (PvP reuses the matching PvE entry). Subtlety rogue has no default table, so nothing is written.|r\n"..
 "|cffbbbbbb- The strategy bar does not refresh by itself; right-click the unit control button afterwards.|r"
 
 -- DeathKnight
@@ -4549,5 +4549,24 @@ MultiBot.tips.raidus.autobalance =
 "|cffff0000Left-Click:|r |cffffffffBalance by score (overall raid power).|r\n"..
 "|cffff0000Right-Click:|r |cffffffffAdvanced Tank / Heal / DPS balance per group.|r\n\n"..
 "|cff999999Uses selected bots from the MultiBot list, or all bots if none are selected.|r";
+
+-- ============================================================
+-- 模块文案多语言 (2026-11-18)
+-- 设计: 自研模块里保留中文原文作为默认值; 语言包按"中文原文"登记译文。
+--   MultiBot.L["中文原文"] = "译文"     -- 在 Locales/*.lua 内登记
+--   MultiBot.T("中文原文")              -- 取译文, 无译文时返回原文
+--   MultiBot.TF("模板 %s", 参数)        -- 取译文后格式化
+-- zhCN 客户端无需登记(原文即中文); enUS/enGB 登记英文译名。
+-- ============================================================
+MultiBot.L = MultiBot.L or {}
+function MultiBot.T(text)
+    if(type(text) ~= "string") then return text end
+    local t = MultiBot.L[text]
+    if(t ~= nil) then return t end
+    return text
+end
+function MultiBot.TF(fmt, ...)
+    return string.format(MultiBot.T(fmt), ...)
+end
 
 MultiBot.GM = false
